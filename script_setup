@@ -1,0 +1,14 @@
+#!/bin/bash
+sudo -sH
+echo 'deb http://rep.logentries.com/ precise main' >/etc/apt/sources.list.d/logentries.list
+gpg --keyserver pgp.mit.edu --recv-keys C43C79AD && gpg -a --export C43C79AD | apt-key add -
+apt-get update
+apt-get install -y python-setproctitle logentries
+le register
+apt-get install -y logentries-daemon
+le register --account-key 5627fc94-dad9-4115-a3b9-81f6e954164d
+le register --name Cinemark_AppServ
+le follow /var/log/torquebox/torquebox.log
+le follow "/var/www/cinemark/cgi-bin/log/tbk_bitacora*.log"
+le follow "/var/www/cinemark/cgi-bin/log/TBK_EVN*.log"
+service logentries restart
